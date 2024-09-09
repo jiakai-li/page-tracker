@@ -40,10 +40,10 @@ ENV VIRTUALENV=/home/pagetracker/venv
 RUN python -m venv $VIRTUALENV
 ENV PATH="$VIRTUALENV/bin:$PATH"
 
-COPY --from=builder /home/pagetracker/dist/package_tracker*.whl /home/pagetracker
+COPY --from=builder /home/pagetracker/dist/page_tracker*.whl /home/pagetracker
 
 RUN python -m pip install --upgrade pip setuptools && \
-    python -m pip install --no-cache-dir package_tracker*.whl
+    python -m pip install --no-cache-dir page_tracker*.whl
 
 CMD ["flask", "--app", "page_tracker.app", "run", \
      "--host", "0.0.0.0", "--port", "5000"]
