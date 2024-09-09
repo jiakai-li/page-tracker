@@ -11,12 +11,31 @@ services:
     ports:
       - "80:8000"
     environment:
-      - REDIS_URL=redis://redis:6379
+      REDIS_URL: "redis://redis:6379"
     networks:
       - backend-network
     depends_on:
       - redis
     command: "gunicorn page_tracker.app:app --bind 0.0.0.0:8000"
+
+  test:
+    profiles:
+      - testing
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    environment:
+      REDIS_URL: "redis://redis:6379"
+      FLASK_URL: "http://web:8000"
+    networks:
+      - backend-network
+    depends_on:
+      - redis
+      - web
+    command: >
+      sh -c 'python -m pytest test/e2e/ -vv
+      --redis-url $$REDIS_URL
+      --flask-url $$FLASK_URL'
 
 networks:
   backend-network:
