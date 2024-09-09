@@ -30,7 +30,7 @@ RUN python -m pip install . -c constraints.txt && \
 FROM python:3.11.2-slim-bullseye AS target
 
 RUN apt-get update && \
-    apt-get upgrade -y \
+    apt-get upgrade -y
 
 RUN useradd --create-home pagetracker
 USER pagetracker
